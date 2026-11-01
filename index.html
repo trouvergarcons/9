@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyPulse - Global Weather Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>SkyPulse Global Weather Hub</h1>
+      <p class="subtitle">Live meteorological data & forecast for 50 major global metropolitan cities</p>
+    </header>
+
+    <!-- Controls Card -->
+    <div class="card controls-card">
+      <div class="control-group">
+        <label for="citySelect">Select City (50 World Capitals & Megacities):</label>
+        <div class="input-row">
+          <select id="citySelect">
+            <optgroup label="Asia">
+              <option value="tokyo">Tokyo, Japan</option>
+              <option value="delhi">Delhi, India</option>
+              <option value="shanghai">Shanghai, China</option>
+              <option value="mumbai">Mumbai, India</option>
+              <option value="beijing">Beijing, China</option>
+              <option value="dhaka">Dhaka, Bangladesh</option>
+              <option value="osaka">Osaka, Japan</option>
+              <option value="karachi">Karachi, Pakistan</option>
+              <option value="chongqing">Chongqing, China</option>
+              <option value="kolkata">Kolkata, India</option>
+              <option value="manila">Manila, Philippines</option>
+              <option value="guangzhou">Guangzhou, China</option>
+              <option value="shenzhen">Shenzhen, China</option>
+              <option value="lahore">Lahore, Pakistan</option>
+              <option value="bengaluru">Bengaluru, India</option>
+              <option value="jakarta">Jakarta, Indonesia</option>
+              <option value="chennai">Chennai, India</option>
+              <option value="bangkok">Bangkok, Thailand</option>
+              <option value="seoul">Seoul, South Korea</option>
+              <option value="hyderabad">Hyderabad, India</option>
+              <option value="tehran">Tehran, Iran</option>
+              <option value="chengdu">Chengdu, China</option>
+              <option value="nanjing">Nanjing, China</option>
+              <option value="wuhan">Wuhan, China</option>
+              <option value="hochiminh">Ho Chi Minh City, Vietnam</option>
+              <option value="ahmedabad">Ahmedabad, India</option>
+              <option value="kualalumpur">Kuala Lumpur, Malaysia</option>
+              <option value="hongkong">Hong Kong, China</option>
+              <option value="singapore">Singapore, Singapore</option>
+              <option value="dubai">Dubai, United Arab Emirates</option>
+            </optgroup>
+            <optgroup label="Europe">
+              <option value="london">London, United Kingdom</option>
+              <option value="paris">Paris, France</option>
+              <option value="berlin">Berlin, Germany</option>
+              <option value="istanbul">Istanbul, Turkey</option>
+              <option value="moscow">Moscow, Russia</option>
+            </optgroup>
+            <optgroup label="North America">
+              <option value="newyork">New York, USA</option>
+              <option value="losangeles">Los Angeles, USA</option>
+              <option value="chicago">Chicago, USA</option>
+              <option value="toronto">Toronto, Canada</option>
+              <option value="mexicocity">Mexico City, Mexico</option>
+            </optgroup>
+            <optgroup label="South America">
+              <option value="saopaulo">São Paulo, Brazil</option>
+              <option value="buenosaires">Buenos Aires, Argentina</option>
+              <option value="riodejaneiro">Rio de Janeiro, Brazil</option>
+              <option value="bogota">Bogotá, Colombia</option>
+              <option value="lima">Lima, Peru</option>
+            </optgroup>
+            <optgroup label="Africa">
+              <option value="cairo">Cairo, Egypt</option>
+              <option value="lagos">Lagos, Nigeria</option>
+              <option value="kinshasa">Kinshasa, DR Congo</option>
+              <option value="luanda">Luanda, Angola</option>
+            </optgroup>
+            <optgroup label="Oceania">
+              <option value="sydney">Sydney, Australia</option>
+            </optgroup>
+            <optgroup label="Local Data Test">
+              <option value="local">Local weather.json File</option>
+            </optgroup>
+          </select>
+          <button id="fetchBtn" class="btn btn-primary">
+            <span class="btn-icon">⚡</span> Fetch Weather
+          </button>
+        </div>
+      </div>
+
+      <!-- AJAX Method Selector -->
+      <div class="method-selector">
+        <span class="method-label">AJAX Implementation:</span>
+        <label class="radio-label">
+          <input type="radio" name="ajaxMethod" value="fetch" checked>
+          <span>Modern <code>fetch()</code> API (Promises / Async-Await)</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="ajaxMethod" value="xhr">
+          <span>Traditional <code>XMLHttpRequest</code> (Classic AJAX)</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Status / Loading Indicator -->
+    <div id="statusMessage" class="status-box hidden"></div>
+
+    <!-- Weather Display Card -->
+    <div id="weatherDisplay" class="card weather-card hidden">
+      <div class="weather-header">
+        <div>
+          <h2 id="cityName" class="city-name">City Name</h2>
+          <p id="coordinates" class="coordinates">Coordinates</p>
+        </div>
+        <div class="weather-icon" id="weatherIcon">☀️</div>
+      </div>
+
+      <div class="temperature-section">
+        <span id="tempValue" class="temp-value">--</span>
+        <span id="tempUnit" class="temp-unit">°C</span>
+        <span id="conditionText" class="condition-badge">Sunny</span>
+      </div>
+
+      <p class="feels-like">Feels like <strong id="feelsLike">--</strong></p>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">Humidity</span>
+          <span id="humidity" class="stat-value">--%</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Wind Speed</span>
+          <span id="windSpeed" class="stat-value">-- km/h</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">UV Index</span>
+          <span id="uvIndex" class="stat-value">--</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Air Quality</span>
+          <span id="airQuality" class="stat-value">--</span>
+        </div>
+      </div>
+
+      <!-- 3-Day Forecast Section -->
+      <div class="forecast-section">
+        <h3>3-Day Forecast</h3>
+        <div id="forecastContainer" class="forecast-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <small>Last updated: <span id="lastUpdated">--</span></small>
+        <small id="usedMethodBadge" class="tech-badge">fetch()</small>
+      </div>
+    </div>
+
+    <!-- Technical Explanation Section -->
+    <div class="card tabs-card">
+      <div class="tabs-header">
+        <button class="tab-btn active" data-tab="explanation">How AJAX & JSON Work</button>
+        <button class="tab-btn" data-tab="jsonViewer">Received JSON Inspector</button>
+        <button class="tab-btn" data-tab="codeSnippet">JavaScript Code</button>
+      </div>
+
+      <div class="tab-content" id="explanation">
+        <div class="steps-flow">
+          <div class="step-box">
+            <span class="step-num">1</span>
+            <h4>User Action</h4>
+            <p>Clicking "Fetch Weather" invokes JavaScript function.</p>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <span class="step-num">2</span>
+            <h4>AJAX Request</h4>
+            <p>Asynchronous HTTP request sent without reloading the page.</p>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <span class="step-num">3</span>
+            <h4>JSON Response</h4>
+            <p>Server returns data formatted as a JSON string.</p>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <span class="step-num">4</span>
+            <h4>DOM Update</h4>
+            <p>Parsed JavaScript object properties are written to HTML tags.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content hidden" id="jsonViewer">
+        <p class="inspector-hint">This is the exact JSON structure retrieved via AJAX:</p>
+        <pre><code id="jsonPre">// Click "Fetch Weather" above to inspect received JSON</code></pre>
+      </div>
+
+      <div class="tab-content hidden" id="codeSnippet">
+        <div class="code-compare">
+          <div>
+            <h4>Option 1: Modern <code>fetch()</code> API</h4>
+            <pre><code>// 1. Send asynchronous GET request
+const response = await fetch(apiUrl);
+
+// 2. Parse JSON response body into JS object
+const data = await response.json();
+
+// 3. Update DOM with data properties
+document.getElementById('cityName').textContent = 
+  `${data.location.city}, ${data.location.country}`;
+document.getElementById('tempValue').textContent = 
+  data.current.temperature;</code></pre>
+          </div>
+          <div>
+            <h4>Option 2: Classic <code>XMLHttpRequest</code></h4>
+            <pre><code>// 1. Create XMLHttpRequest instance
+const xhr = new XMLHttpRequest();
+xhr.open('GET', apiUrl, true);
+
+// 2. Event listener triggers when response is ready
+xhr.onload = function() {
+  if (xhr.status >= 200 && xhr.status < 300) {
+    // 3. Parse JSON string into JS object
+    const data = JSON.parse(xhr.responseText);
+    
+    // 4. Update DOM
+    document.getElementById('tempValue').textContent = 
+      data.current.temperature;
+  }
+};
+xhr.send();</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

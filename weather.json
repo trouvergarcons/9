@@ -1,0 +1,28 @@
+{
+  "status": "success",
+  "location": {
+    "city": "Tokyo",
+    "country": "Japan",
+    "coordinates": {
+      "latitude": 35.6762,
+      "longitude": 139.6503
+    }
+  },
+  "current": {
+    "temperature": 22,
+    "unit": "°C",
+    "feels_like": 21,
+    "condition": "Sunny",
+    "icon": "☀️",
+    "humidity": 55,
+    "wind_speed": 12,
+    "uv_index": 5,
+    "air_quality": "Good"
+  },
+  "forecast": [
+    { "day": "Tomorrow", "temp": 24, "condition": "Partly Cloudy", "icon": "⛅" },
+    { "day": "Day 2", "temp": 20, "condition": "Light Rain", "icon": "🌧️" },
+    { "day": "Day 3", "temp": 18, "condition": "Thunderstorm", "icon": "⛈️" }
+  ],
+  "last_updated": "2026-09-15 10:30 AM"
+}
